@@ -12,6 +12,11 @@ code to modify it
 @Configuration
 public class MailConfig {
     @Bean
+    public DemoBean demoBean() {
+        return new DemoBean();
+    }
+
+    @Bean
     @ConditionalOnProperty(name = "spring.mail.host", havingValue = "foo", matchIfMissing = true)
     //@Profile("dev")
     // where mockMailSender is the Bean name
@@ -24,6 +29,11 @@ public class MailConfig {
     //@Profile("!dev")
     // where smtpMailSender is the Bean name
     public MailSender smtpMailSender() {
+
+        // this does NOT create a second bean.  The results of that method
+        // are cached
+        demoBean();
+
         return new SmtpMailSender();
     }
 }
