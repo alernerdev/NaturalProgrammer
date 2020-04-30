@@ -1,5 +1,6 @@
 package com.pragmaticbitbucket.spring5tutorial.commands;
 
+import com.pragmaticbitbucket.spring5tutorial.validation.Password;
 import com.pragmaticbitbucket.spring5tutorial.validation.UniqueEmail;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -10,15 +11,14 @@ import com.pragmaticbitbucket.spring5tutorial.domain.User;
 import com.pragmaticbitbucket.spring5tutorial.validation.UniqueEmail;
 
 public class UserCommand {
-    @UniqueEmail
+    @UniqueEmail // custom annotation
     private String email;
 
     @NotBlank
     @Size(min=1,max=64)
     private String name;
 
-    @NotBlank
-    @Size(min=6,max=32)
+    @Password // custom annotation
     private String password;
 
     public String getEmail() {

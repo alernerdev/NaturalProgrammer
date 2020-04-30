@@ -11,7 +11,8 @@ import java.util.HashSet;
 public class User {
     public static enum Role {
         UNVERIFIED,
-        ADMIN
+        ADMIN,
+        BLOCKED
     }
 
     @Id
