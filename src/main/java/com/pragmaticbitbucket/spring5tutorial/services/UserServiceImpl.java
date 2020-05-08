@@ -4,6 +4,7 @@ import com.pragmaticbitbucket.spring5tutorial.commands.UserCommand;
 import com.pragmaticbitbucket.spring5tutorial.domain.User;
 import com.pragmaticbitbucket.spring5tutorial.repositories.UserRepository;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -20,6 +21,13 @@ import org.apache.commons.logging.Log;
 public class UserServiceImpl implements UserService {
     private static Log log = LogFactory.getLog(UserServiceImpl.class);
 
+    @Value("${application.admin.email:admin@domainname.com}")
+    private String adminEmail;
+    @Value("${application.admin.password:password}")
+    private String adminPassword;
+    @Value("${application.admin.name:admin}")
+    private String adminName;
+
     private UserRepository userRepository;
 
     public UserServiceImpl(UserRepository userRepository) {
@@ -33,9 +41,21 @@ public class UserServiceImpl implements UserService {
         log.info("--- PostConstruct init has run -- ");
     }
 
+    @Override
     @EventListener
+    @Transactional(propagation=Propagation.REQUIRED, readOnly = false)
     public void afterApplicationReady(ApplicationReadyEvent e) {
         log.info("--- Application is ready to run -- ");
+
+        if (!userRepository.findByEmail("admin@example.com").isPresent()) {
+            User user = new User();
+            user.setEmail(adminEmail);
+            user.setName(adminName);
+            user.setPassword(adminPassword);
+            user.getRoles().add(User.Role.ADMIN);
+
+            userRepository.save(user);
+        }
     }
 
     // transaction starts at the start of the function and ends at the end

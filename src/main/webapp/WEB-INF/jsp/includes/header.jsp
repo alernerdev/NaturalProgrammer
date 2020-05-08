@@ -35,12 +35,19 @@
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Dropdown
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li>
+                        <form id="LogoutForm" action="/logout" method="post">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                        </form>
+                        <a class="dropdown-item" href="#" onclick="document.getElementById('LogoutForm').submit()">
+                            Sign out
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
             </li>
             <li class="nav-item">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
